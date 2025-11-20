@@ -8,7 +8,10 @@ public class CalcolatriceServer {
         try (ServerSocket serverSocket = new ServerSocket(PORTA)) {
     System.out.println("Server avviato sulla porta " + PORTA);
    
-          while (true) {
+         
+      }
+    }
+         while (true) {
     Socket client = serverSocket.accept();
     
       }
@@ -30,9 +33,8 @@ public class CalcolatriceServer {
           return num1 / num2;
         default: throw new IllegalArgumentException("Operazione non supportata");
         }
-      }
       
-    }
+    
 
 
 }
