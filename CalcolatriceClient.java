@@ -8,24 +8,39 @@ public class CalcolatriceClient {
     
     public static void main(String[] args) {
         try (Socket socket = new Socket(HOST, PORTA);
-           PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-           BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-           Scanner scanner = new Scanner(System.in)) {
-              System.out.println("=== CALCOLATRICE REMOTA ===");
-              System.out.println("Formato: NUMERO OPERAZIONE NUMERO");
-              System.out.println("Operazioni: + - * /");
-              System.out.println("Scrivi 'quit' per uscire");
-              while (true) {
+             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+             Scanner scanner = new Scanner(System.in)) {
+            
+            System.out.println("=== CALCOLATRICE REMOTA ===");
+            System.out.println("Formato: NUMERO OPERAZIONE NUMERO");
+            System.out.println("Operazioni: + - * /");
+            System.out.println("Scrivi 'quit' per uscire");
+
+            while (true) {
                 System.out.print("Calcolo > ");
                 String input = scanner.nextLine();
-    
-              if (input.equalsIgnoreCase("quit")) {
-                out.println("QUIT");
-                break;
-              }
-    
-   
+
+                if (input.equalsIgnoreCase("quit")) {
+                    out.println("QUIT");
+                    break;
+                }
+
+               
+                out.println(input);
+
+                String risposta = in.readLine();
+                if (risposta == null) {
+                    System.out.println("Server disconnesso.");
+                    break;
+                }
+
+                System.out.println("→ " + risposta);
             }
+
+        } catch (IOException e) {
+            System.err.println("Errore: " + e.getMessage());
         }
     }
 }
+
