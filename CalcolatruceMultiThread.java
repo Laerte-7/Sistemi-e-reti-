@@ -12,24 +12,49 @@ public class CalcolatriceServer {
                 Socket client = serverSocket.accept();
                 System.out.println("Client connesso");
 
-                BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-
-                String richiesta = in.readLine();
-                System.out.println("Richiesta: " + richiesta);
-
-                try {
-                    String risposta = calcola(richiesta);
-                    out.println("Risultato: " + risposta);
-                } catch (Exception e) {
-                    out.println("ERRORE: " + e.getMessage());
-                }
-
-                client.close();
+                
+                Thread t = new Thread(new ClientHandler(client));
+                t.start();
             }
 
         } catch (IOException e) {
             System.err.println("Errore server: " + e.getMessage());
+        }
+    }
+}
+
+
+class ClientHandler implements Runnable {
+    private Socket client;
+
+    ClientHandler(Socket client) {
+        this.client = client;
+    }
+
+    @Override
+    public void run() {
+        try (
+            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            PrintWriter out = new PrintWriter(client.getOutputStream(), true)
+        ) {
+            String richiesta = in.readLine();
+            System.out.println("Richiesta del client: " + richiesta);
+
+            try {
+                String risposta = calcola(richiesta);
+                out.println("Risultato: " + risposta);
+            } catch (Exception e) {
+                out.println("ERRORE: " + e.getMessage());
+            }
+
+        } catch (IOException e) {
+            System.err.println("Errore nella comunicazione col client: " + e.getMessage());
+        } finally {
+            try {
+                client.close();
+            } catch (IOException e) {
+                System.err.println("Errore chiusura client: " + e.getMessage());
+            }
         }
     }
 
