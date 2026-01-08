@@ -1,2 +1,5 @@
-SOCKET UDP DAYTIME:
+SOCKET UDP:
 https://github.com/filippo-bilardo/Socket-programming-in-Java/blob/main/04-Socket-UDP/01-Socket-UDP-Fondamenti.md 
+
+SOCKET UDP daytime:
+https://github.com/filippo-bilardo/Socket-programming-in-Java/blob/main/04-Socket-UDP/esercitazioni/ES04a-DaytimeServerUDP/README.md
